@@ -7,7 +7,8 @@ import copy
 from .set_preference import check_preference
 import requests
 import json
-
+import jnius_config
+import os
 
 import pprint
 
@@ -16,7 +17,8 @@ class ArgumentationTheory:
     Class representing an ASPIC+ Argumentation Theory (AT)
     '''
 
-    def __init__(self, argumentation_system, knowledge_base, ordering="weakest"):
+    def __init__(self, argumentation_system, knowledge_base, ordering="weakest", engine="http://ws.arg.tech/e/dom"):
+
         self.argumentation_system = argumentation_system
         self.knowledge_base = knowledge_base
 
@@ -28,6 +30,8 @@ class ArgumentationTheory:
 
         self.argument_preferences = []
         self.ordering = ordering
+
+        self.engine = engine
 
     def check_well_formed(self):
         '''
@@ -67,15 +71,12 @@ class ArgumentationTheory:
         self.calculate_argument_preferences()
         self.calculate_defeat()
 
-
-        url = "http://ws.arg.tech/e/dom"
-
         data = {
             "arguments": [a.label for a in self.arguments],
             "attacks": ["({a},{b})".format(a=a,b=b) for (a,b) in self.calculate_defeat()],
             "semantics": semantics
         }
-        response = requests.post(url, data = json.dumps(data))
+        response = requests.post(self.engine, data = json.dumps(data))
         response = response.json()
 
         if semantics not in response:
@@ -397,6 +398,10 @@ class ArgumentationTheory:
         return harmonised_parameters
 
 if __name__ == "__main__":
+
+
+
+
     system = ArgumentationSystem()
     kb = KnowledgeBase()
 
