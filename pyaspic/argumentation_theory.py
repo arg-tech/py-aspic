@@ -396,38 +396,3 @@ class ArgumentationTheory:
             harmonised_parameters = parameter_mapping[str(arguments[0].conclusion)]
 
         return harmonised_parameters
-
-if __name__ == "__main__":
-
-
-
-
-    system = ArgumentationSystem()
-    kb = KnowledgeBase()
-
-    kb.add_premise(Formula("current_goal(steps)"))
-    kb.add_premise(Formula("user_age(17)"))
-    kb.add_premise(Formula("rejected_too_high(13000)"))
-
-
-    system.add_rule(Rule.from_string("[r1]", "current_goal(steps) => recommended(10000)"))
-    system.add_rule(Rule.from_string("[r2]", "recommended(X) => set_goal(X)"))
-    system.add_rule(Rule.from_string("[r3]", "current_goal(steps), user_age(X), X>65 => suggested(7500)"))
-    system.add_rule(Rule.from_string("[r4]", "current_goal(steps), user_age(X), X<18 => suggested(13000)"))
-    system.add_rule(Rule.from_string("[r5]", "suggested(X), => set_goal(X)"))
-    system.add_rule(Rule.from_string("[r6]", "rejected_too_high(X) -> ~set_goal(X)"))
-    system.add_rule(Rule.from_string("[r7]", "rejected_too_low(X) -> ~set_goal(X)"))
-    system.add_rule(Rule.from_string("[r8]", "rejected_too_high(X) => suggested([X*0.8])"))
-    system.add_rule(Rule.from_string("[r9]", "rejected_too_low(X) => suggested([X*1.2])"))
-
-    print([str(r) for r in system.rules])
-
-    system.add_contrary((Formula("set_goal(X)"), Formula("set_goal(Y)")), True)
-    system.add_rule_preference(("[r2]","[r5]"))
-    system.add_rule_preference(("[r2]","[r8]"))
-    system.add_rule_preference(("[r2]","[r9]"))
-
-    theory = ArgumentationTheory(system, kb)
-
-    result = theory.evaluate()
-    print(result)
