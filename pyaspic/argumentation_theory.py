@@ -7,7 +7,6 @@ import copy
 from .set_preference import check_preference
 import requests
 import json
-import jnius_config
 import os
 
 import pprint
