@@ -105,7 +105,7 @@ class ArgumentationTheory:
                    "sub_arguments": [s.label for s in a.sub_arguments],
                    "last_sub_arguments": [s.label for s in a.last_sub_arguments]
                   }
-            response[a.label] = arg
+            response["arguments"][a.label] = arg
 
 
         return response
