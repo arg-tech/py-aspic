@@ -52,16 +52,16 @@ class ArgumentationTheory:
 
                 if r1.type == Rule.STRICT and r2.type == Rule.DEFEASIBLE:
                     if str(r1.consequent) in contrariness and str(r2.consequent) in contrariness[str(r1.consequent)]:
-                        return False
+                        return False, "Consequents of defeasible rules cannot be contraries of consequents of strict rules"
 
         # check 2: assumptions can't be contraries of consequents of rules, nor axioms/premises
         for a in self.knowledge_base.assumptions:
             for el in rule_consequents + self.knowledge_base.axioms + self.knowledge_base.premises:
                 if str(el) in contrariness:
                     if str(a) in contrariness[str(el)]:
-                        return False
+                        return False, "Assumptions cannot be contraries of axioms or premises"
 
-        return True
+        return True, None
 
 
     def evaluate(self, semantics="grounded", query=None):
