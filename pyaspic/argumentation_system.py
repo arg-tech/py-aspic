@@ -3,14 +3,14 @@ from .formula import Formula
 
 class ArgumentationSystem:
 
-    def __init__(self):
+    def __init__(self, transposition=False):
         self.language = set()
         self.rules = set()
         self.rule_preferences = []
 
         self.contrariness = {}
 
-        self.transposition = True
+        self.transposition = transposition
 
     def add_rule(self, rule:Rule):
         self.rules.add(rule)
