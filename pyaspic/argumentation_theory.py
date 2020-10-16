@@ -72,6 +72,8 @@ class ArgumentationTheory:
         self.calculate_argument_preferences()
         self.calculate_defeat()
 
+        query_response = None
+
         data = {
             "arguments": [a.label for a in self.arguments],
             "attacks": ["({a},{b})".format(a=a,b=b) for (a,b) in self.calculate_defeat()],
@@ -95,7 +97,12 @@ class ArgumentationTheory:
         response["acceptableConclusions"] = {}
 
         for id, ext in extensions.items():
-            response["acceptableConclusions"][id] = [str(a.conclusion) for a in self.arguments if a.label in extensions[id]]
+            c = [str(a.conclusion) for a in self.arguments if a.label in extensions[id]]
+
+            if query is not None and query in c:
+                query_response = True
+
+            response["acceptableConclusions"][id] = c
 
         response["arguments"] = {}
 
@@ -109,8 +116,10 @@ class ArgumentationTheory:
                   }
             response["arguments"][a.label] = arg
 
+        if query is not None and query_response is None:
+            query_response = False
 
-        return response
+        return response, query_response
 
 
     def calculate_argument_preferences(self):
