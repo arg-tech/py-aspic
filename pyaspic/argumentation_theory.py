@@ -370,6 +370,10 @@ class ArgumentationTheory:
         for individual arguments (i.e. X in arg1 must be mapped to the same value as X in arg2, or not exist in arg2 etc.)
         '''
 
+        # if there's no parameter mapping, don't bother...
+        if not parameter_mapping:
+            return {}
+
         harmonised_parameters = {}
         proceed = True
 

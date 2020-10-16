@@ -44,6 +44,9 @@ class Formula:
     def has_variables(self):
         return (len(self.variables) > 0)
 
+    def has_parameters(self):
+        return (len(self.parameters) > 0)
+
 
     def evaluate_comparison(self, variable_mapping):
         if not self.is_comparison:
