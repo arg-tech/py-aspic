@@ -37,9 +37,11 @@ class ArgumentationTheory:
         Checks if this theory is well-formed based on the two principles in Prakken 2010
         '''
 
+        print("Checking if well formed")
+
         # check 1: no consequent of a defeasible rule is a contrary of the consequent of a strict rule
         rules = self.argumentation_system.rules
-        contrariness = self.argumentation_system.contrariness
+        contrariness = {x:str(z) for x,y in self.argumentation_system.contrariness.items() for z in y}
 
         # record the rule consequents for check 2...
         rule_consequents = []
